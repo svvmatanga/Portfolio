@@ -649,16 +649,108 @@
       margin: 1.5rem 0 2.5rem;
     }
 
+    /* ── HAMBURGER BUTTON ── */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+    .nav-toggle span {
+      display: block;
+      height: 1.5px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 1.2rem 1.5rem; }
-      .nav-links { gap: 1.5rem; }
-      section { padding: 4rem 1.5rem; }
-      #hero { padding: 7rem 1.5rem 4rem; }
-      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      /* Nav */
+      nav { padding: 1.1rem 1.25rem; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(10,10,15,0.97);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2.5rem;
+        z-index: 150;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+      .nav-links.open { opacity: 1; pointer-events: all; }
+      .nav-links a { font-size: 1rem; letter-spacing: 0.2em; }
+
+      /* General sections */
+      section { padding: 4rem 1.25rem; }
+
+      /* Hero */
+      #hero { padding: 6rem 1.25rem 4rem; align-items: flex-start; }
+      .hero-name { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+      .hero-desc { font-size: 0.95rem; }
+      .hero-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+        width: 100%;
+      }
+      .btn-primary, .btn-outline {
+        text-align: center;
+        width: 100%;
+        padding: 1rem 1.5rem;
+      }
+
+      /* About */
+      #about { max-width: 100%; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+
+      /* Experience timeline */
+      .exp-inner { max-width: 100%; }
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+      .timeline-date { padding-top: 0; }
+
+      /* Projects */
+      #projects { max-width: 100%; }
+      .projects-grid { grid-template-columns: 1fr; }
+
+      /* Education */
+      .edu-inner { max-width: 100%; }
       .edu-grid { grid-template-columns: 1fr; }
-      .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+
+      /* Certifications */
+      #certifications { max-width: 100%; }
+      .cert-list { grid-template-columns: 1fr; }
+      .cert-info { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+      .cert-date { margin-left: 0; }
+
+      /* Contact */
+      .contact-email { font-size: 1rem; word-break: break-all; }
+
+      /* Footer */
+      footer {
+        padding: 1.5rem 1.25rem;
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: center;
+      }
     }
 
     /* ── SOCIAL ICONS ── */
@@ -757,7 +849,10 @@
   <!-- NAV -->
   <nav>
     <div class="nav-logo">S. V. Matanga</div>
-    <ul class="nav-links">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
@@ -795,7 +890,7 @@
         <div class="divider"></div>
         <p>I'm a BS Computer Science student at Pamantasan ng Lungsod Maynila with a passion for web development, front-end, and UI/UX design.</p>
         <div class="about-contact">
-          <div class="contact-item"><span>✉</span><span>sophiavienmatanga15@gmail.com</span></div>
+          <div class="contact-item"><span>✉</span><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="64170b140c0d05120d010a090510050a03055551240309050d084a070b09">[email&#160;protected]</a></span></div>
           <div class="contact-item"><span>✆</span><span>0976-194-4801</span></div>
           <div class="contact-item"><span>◈</span><span>Manila, Philippines</span></div>
         </div>
@@ -1105,7 +1200,7 @@
       <div class="divider" style="margin: 1.5rem auto 2.5rem;"></div>
       <p class="contact-sub">I'm currently open to internship opportunities, freelance projects, and collaborations. Feel free to reach out!</p>
       <a href="https://mail.google.com/mail/?view=cm&to=sophiavienmatanga15@gmail.com" target="_blank" class="contact-email">
-      sophiavienmatanga15@gmail.com
+      <span class="__cf_email__" data-cfemail="b3c0dcc3dbdad2c5dad6ddded2c7d2ddd4d28286f3d4ded2dadf9dd0dcde">[email&#160;protected]</span>
      </a>
       <p class="contact-phone">0976-194-4801</p>
 
@@ -1152,7 +1247,7 @@
     <div class="footer-note">BS Computer Science · PLM Manila</div>
   </footer>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Scroll-triggered fade-in
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -1181,12 +1276,28 @@
 
     window.addEventListener('scroll', () => {
       let current = '';
-      sections.forEach(sec => {
-        if (window.scrollY >= sec.offsetTop - 200) current = sec.id;
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        if (window.scrollY >= sectionTop) current = section.getAttribute('id');
       });
       navLinks.forEach(link => {
-        link.style.color = link.getAttribute('href') === `#${current}`
+        link.style.color = link.getAttribute('href') === '#' + current
           ? 'var(--accent)' : '';
+      });
+    });
+
+    // Hamburger menu toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinksEl = document.getElementById('navLinks');
+    navToggle.addEventListener('click', () => {
+      navToggle.classList.toggle('open');
+      navLinksEl.classList.toggle('open');
+    });
+    // Close menu when a link is clicked
+    navLinksEl.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navToggle.classList.remove('open');
+        navLinksEl.classList.remove('open');
       });
     });
   </script>
