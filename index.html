@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sophia Vien Matanga — Portfolio</title>
+  <link rel="shortcut icon" href="imgs/idpic.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --card: #1a1a26;
+      --accent: #c8a96e;
+      --accent2: #7c9eb2;
+      --text: #e8e4dc;
+      --muted: #7a7a8c;
+      --border: rgba(200,169,110,0.15);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 4rem;
+      background: rgba(10,10,15,0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg-circle {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+      top: 50%; right: -100px;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    .hero-bg-circle2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,158,178,0.05) 0%, transparent 70%);
+      bottom: -50px; left: 200px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      max-width: 700px;
+      z-index: 1;
+    }
+
+    .hero-tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.4s forwards;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 500px;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+
+    .btn-primary {
+      padding: 0.85rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .btn-primary:hover { opacity: 0.85; transform: translateY(-2px); }
+
+    .btn-outline {
+      padding: 0.85rem 2rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 1.2s forwards;
+    }
+
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease infinite;
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 6rem 4rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 3rem;
+      line-height: 1.2;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .about-contact {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .contact-item {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .contact-item span:first-child { color: var(--accent); }
+
+    .skills-block { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .skill-group-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent2);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      padding: 0.3rem 0.75rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .exp-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .timeline-item.visible { opacity: 1; transform: translateY(0); }
+    .timeline-item:last-child { border-bottom: none; }
+
+    .timeline-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+      padding-top: 0.2rem;
+    }
+
+    .timeline-role {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-top: 0.25rem;
+    }
+
+    .timeline-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-body {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-top: 0.75rem;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { max-width: 1100px; margin: 0 auto; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease, border-color 0.3s, transform 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-card.visible { opacity: 1; transform: translateY(0); }
+    .project-card:hover { border-color: rgba(200,169,110,0.4); transform: translateY(-4px); }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+      z-index: 1;
+    }
+
+    .project-card:hover::before { transform: scaleX(1); }
+
+    /* Thumbnail */
+    .project-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #0d0d1a;
+      position: relative;
+    }
+
+    .project-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .project-card:hover .project-thumb img { transform: scale(1.04); }
+
+    /* Fallback placeholder when no image */
+    .project-thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      background: #0d0d1a;
+    }
+
+    /* Hover overlay */
+    .project-thumb::after {
+      content: '↗ View Project';
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,15,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-thumb::after { opacity: 1; }
+
+    /* Card body */
+    .project-body {
+      padding: 1.25rem 1.5rem 1.5rem;
+    }
+
+    .project-tech {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.6rem;
+      color: var(--text);
+    }
+
+    .project-desc {
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+
+    .project-date {
+      margin-top: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+    }
+
+    /* ── EDUCATION ── */
+    #education {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .edu-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .edu-card.visible { opacity: 1; transform: translateY(0); }
+
+    .edu-degree {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .edu-school {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+    }
+
+    .edu-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent);
+    }
+
+    /* ── CERTIFICATIONS ── */
+    #certifications { max-width: 1100px; margin: 0 auto; }
+
+    .cert-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .cert-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .cert-item.visible { opacity: 1; transform: translateY(0); }
+
+    .cert-name {
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .cert-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--accent);
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .contact-inner { max-width: 600px; margin: 0 auto; }
+
+    .contact-inner .section-title { margin-bottom: 1rem; }
+
+    .contact-sub {
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .contact-email {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--accent);
+      text-decoration: none;
+      display: inline-block;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.25rem;
+      transition: border-color 0.3s;
+    }
+
+    .contact-email:hover { border-color: var(--accent); }
+
+    .contact-phone {
+      margin-top: 1rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 2rem 4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    .footer-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.7); }
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 40px; height: 1px;
+      background: var(--accent);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+    /* ── SOCIAL ICONS ── */
+  .social-links {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .social-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.3s;
+  }
+  .social-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    border-color: var(--accent);
+    transform: translateY(-3px);
+  }
+
+  .cert-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.cert-item.visible { opacity: 1; transform: translateY(0); }
+
+.cert-badge {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+
+.cert-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+}
+
+.cert-name { font-size: 0.88rem; line-height: 1.4; }
+
+.cert-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  white-space: nowrap;
+  margin-left: 1rem;
+}
+
+.project-download {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.85rem;
+  border-radius: 2px;
+  transition: background 0.3s, color 0.3s;
+}
+.project-card:hover .project-download {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Override hover overlay for APK cards */
+.apk-card .project-thumb::after {
+  content: '↓ Click to Download APK';
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">S. V. Matanga</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-circle"></div>
+    <div class="hero-bg-circle2"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Front-End Developer &amp; UI/UX Designer</p>
+      <h1 class="hero-name">Sophia Vien<br><em>Matanga.</em></h1>
+      <p class="hero-desc">Computer Science student at PLM, crafting thoughtful digital experiences through code and design </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary">View Projects</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+        <a href="imgs/Resume_Matanga.pdf" download class="btn-outline">↓ Download CV</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll to know more</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="section-label">About</p>
+        <h2 class="section-title">Building things<br>that matter.</h2>
+        <div class="divider"></div>
+        <p>I'm a BS Computer Science student at Pamantasan ng Lungsod Maynila with a passion for web development, front-end, and UI/UX design.</p>
+        <div class="about-contact">
+          <div class="contact-item"><span>✉</span><span>sophiavienmatanga15@gmail.com</span></div>
+          <div class="contact-item"><span>✆</span><span>0976-194-4801</span></div>
+          <div class="contact-item"><span>◈</span><span>Manila, Philippines</span></div>
+        </div>
+      </div>
+      <div class="skills-block">
+        <p class="section-label">Technical Skills</p>
+        <div>
+          <p class="skill-group-label">Languages</p>
+          <div class="skill-tags">
+            <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span>
+            <span class="tag">Java</span><span class="tag">Python</span><span class="tag">C</span><span class="tag">SQL</span>
+          </div>
+        </div>
+        <div>
+          <p class="skill-group-label">Frameworks & Tools</p>
+          <div class="skill-tags">
+            <span class="tag">React.js</span><span class="tag">Node.js</span><span class="tag">Git</span>
+            <span class="tag">Figma</span><span class="tag">Android Studio</span><span class="tag">Tkinter</span><span class="tag">VS Code</span>
+          </div>
+        </div>
+        <div>
+          <p class="skill-group-label">Specializations</p>
+          <div class="skill-tags">
+            <span class="tag">Web Development</span><span class="tag">Front-End</span>
+            <span class="tag">UI/UX Design</span><span class="tag">Database Management</span>
+          </div>
+        </div>
+        <div>
+          <p class="skill-group-label">Productivity</p>
+          <div class="skill-tags">
+            <span class="tag">Google Docs</span><span class="tag">Google Sheets</span>
+            <span class="tag">Google Drive</span><span class="tag">Google Slides</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="exp-inner">
+      <p class="section-label">Experience & Organizations</p>
+      <h2 class="section-title">Where I've<br>contributed.</h2>
+      <div class="divider"></div>
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-date">Aug 2025 — Present</div>
+            <div class="timeline-role">Full-Stack Developer</div>
+          </div>
+          <div>
+            <div class="timeline-title">Compiler Development Project</div>
+            <div class="timeline-body">Developed the front-end pipeline including lexer and parser, and implemented semantic analysis covering type checking, scope resolution, and error detection to ensure syntactic and semantic correctness of source code.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-date">Aug — Dec 2025</div>
+            <div class="timeline-role">UI/UX Designer</div>
+          </div>
+          <div>
+            <div class="timeline-title">AIlab — AI Powered PLM Student Companion</div>
+            <div class="timeline-body">Designed wireframes and interactive prototypes for an AI-driven student companion app, mapping user flows and interface layouts to deliver an intuitive and accessible experience for PLM students.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-date">Aug 2025 — Present</div>
+            <div class="timeline-role">UI/UX Designer & QA Analyst</div>
+          </div>
+          <div>
+            <div class="timeline-title">PoyBash Furniture — E-Commerce & Inventory System</div>
+            <div class="timeline-body">Designed the UI/UX and developed the front-end interface for a furniture e-commerce and inventory management system, creating intuitive product browsing, cart, and inventory dashboard experiences.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-date">Mar — Dec 2024</div>
+            <div class="timeline-role">Full-Stack Developer</div>
+          </div>
+          <div>
+            <div class="timeline-title">Student Enrollment System</div>
+            <div class="timeline-body">Built a full-stack student enrollment system from the ground up, handling database design, backend logic, and frontend interface to support end-to-end student registration and records management.</div>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-date">Nov 2024 — Present</div>
+            <div class="timeline-role">Noogler</div>
+          </div>
+          <div>
+            <div class="timeline-title">Google Developer Student Club</div>
+            <div class="timeline-body">Attended chapter events and tech sessions to expand knowledge in Google technologies, software development practices, and the broader developer community.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">My Works</p>
+    <h2 class="section-title">Things I've built.</h2>
+    <div class="divider"></div>
+    <div class="projects-grid">
+
+      <!-- 0. Compiler Development-->
+      <a href="HTML/MATANGA/WAIT.html" target="_blank" class="project-card">
+        <div class="project-thumb">
+          <img src="imgs/EME.png" alt="compiler development project"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">FULL-STACK</div>
+          <div class="project-title">Embrace My Emotion Langua (EME) - Compiler Development </div>
+          <div class="project-desc">Developed the front-end pipeline (lexer and parser) and implemented semantic analysis and code generation for the EME programming language.</div>
+          <div class="project-date">Aug 2025 - Present (In Progress) </div>
+        </div>
+      </a>
+
+      <!-- 1. Personal Portfolio -->
+      <a href="https://svvmatanga.github.io/website/" target="_blank" class="project-card">
+        <div class="project-thumb">
+          <img src="imgs/per_web.png" alt="Personal Portfolio Website"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">FULL-STACK</div>
+          <div class="project-title">Personal Portfolio Website</div>
+          <div class="project-desc">Built a personal portfolio website from scratch to showcase projects, skills, and experience with a clean and responsive design.</div>
+          <div class="project-date">February 2024</div>
+        </div>
+      </a>
+
+      <!-- 2. Memory Matching Game -->
+      <a href="https://github.com/svvmatanga/MatchingGame/releases/download/type_v1/app-debug.apk" target="_blank" class="project-card apk-card">
+        <div class="project-thumb">
+          <img src="imgs/match.png" alt="Memory Matching Game"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">FULL-STACK</div>
+          <div class="project-title">Memory Matching Game</div>
+          <div class="project-desc">A fully functional memory matching game with card flip animations, match detection logic, and score tracking.</div>
+          <div class="project-date">April 2025</div>
+          <span class="project-download">↓ Click to Download APK</span> 
+        </div>
+      </a>
+
+      <!-- 3. Blimpz Quiz Game -->
+      <a href="https://github.com/svvmatanga/Blimps/releases/download/blimps_v1/app-debug.apk" target="_blank" class="project-card apk-card">
+        <div class="project-thumb">
+          <img src="imgs/blimps.png" alt="Blimpz Quiz Game"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">UI/UX · QA </div>
+          <div class="project-title">Blimpz — Cloud-Based Trivia & Quiz Game</div>
+          <div class="project-desc">Designed and implemented the UI/UX for Blimpz, focusing on responsive layouts and a smooth user experience.</div>
+          <div class="project-date">April 2025</div>
+          <span class="project-download">↓ Click to Download APK</span> 
+        </div>
+      </a>
+
+      <!-- 4. Student Enrollment System -->
+      <a href="HTML/enrollment/enrollment.html" target="_blank" class="project-card">
+        <div class="project-thumb">
+          <img src="imgs/enrollment.png" alt="Student Enrollment System"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">Full-Stack</div>
+          <div class="project-title">Student Enrollment System</div>
+          <div class="project-desc">Built a full-stack enrollment system handling database design, backend logic, and frontend interface for end-to-end student registration.</div>
+          <div class="project-date">Mar – Dec 2024</div>
+        </div>
+      </a>
+
+      <!-- 5. PoyBash Furniture -->
+      <a href="https://www.poybash.me/?fbclid=IwY2xjawQpooRleHRuA2FlbQIxMQBzcnRjBmFwcF9pZAEwAAEeh_1k4RSnluliGraSgVN9ivC5Z_jMkmXIUMQb7MN2wigvLQqbIijpYy_UfE0_aem_i-FYKb-nnmmMohAU8qDXrA" target="_blank" class="project-card">
+        <div class="project-thumb">
+          <img src="imgs/POYBASH.png" alt="PoyBash Furniture E-Commerce"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">UI/UX · QA</div>
+          <div class="project-title">PoyBash Furniture — E-Commerce</div>
+          <div class="project-desc">Designed the UI/UX and developed the front-end for a furniture e-commerce and inventory management system.</div>
+          <div class="project-date">Aug 2025 – Present</div>
+        </div>
+      </a>
+
+      <!-- 6. AIlab Student Companion -->
+      <a href="https://www.figma.com/proto/YBLcrE6lIChrO269tzyxXP/AILAB-VERSION-2?node-id=0-1&t=EMS2sAFjOJOCDANm-1" target="_blank" class="project-card">
+        <div class="project-thumb">
+          <img src="imgs/ALAB.png" alt="AIlab PLM Student Companion"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="project-thumb-placeholder" style="display:none;">No preview yet</div>
+        </div>
+        <div class="project-body">
+          <div class="project-tech">UI/UX Design</div>
+          <div class="project-title">AIlab — PLM Student Companion</div>
+          <div class="project-desc">Designed wireframes and interactive prototypes for an AI-driven student companion app for PLM students.</div>
+          <div class="project-date">Aug – Dec 2025</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="edu-inner">
+      <p class="section-label">Education</p>
+      <h2 class="section-title">Academic<br>background.</h2>
+      <div class="divider"></div>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <div class="edu-degree">Bachelor of Science in Computer Science</div>
+          <div class="edu-school">Pamantasan ng Lungsod Maynila<br>General Luna, corner Muralla St., Intramuros, Manila</div>
+          <div class="edu-year">2023 — Present</div>
+        </div>
+        <div class="edu-card">
+          <div class="edu-degree">Senior High School</div>
+          <div class="edu-school">Santa Isabel College of Manila<br>210 Taft Ave, Ermita, Manila</div>
+          <div class="edu-year">2021 — 2023</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certifications">
+    <p class="section-label">Certifications</p>
+    <h2 class="section-title">Credentials.</h2>
+    <div class="divider"></div>
+    <div class="cert-list">
+
+  <div class="cert-item">
+    <img src="imgs/badge_google1.png" alt="Google" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">Google Certified Educator Level 1</span>
+      <span class="cert-date">Jan 2026</span>
+    </div>
+  </div>
+
+  <div class="cert-item">
+    <img src="imgs/badge_data_analytics.png" alt="CISCO" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">Data Analytics Essentials — CISCO</span>
+      <span class="cert-date">Jan 2026</span>
+    </div>
+  </div>
+
+  <div class="cert-item">
+    <img src="imgs/badge_AI_SKLLSBUILD.png" alt="CISCO" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">AI Fundamentals with IBM SkillsBuild — CISCO</span>
+      <span class="cert-date">Dec 2025</span>
+    </div>
+  </div>
+
+  <div class="cert-item">
+    <img src="imgs/badge_AI_fun.png" alt="IBM" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">Artificial Intelligence Fundamentals — IBM</span>
+      <span class="cert-date">Dec 2025</span>
+    </div>
+  </div>
+
+  <div class="cert-item">
+    <img src="imgs/badge_english_IT1.png" alt="CISCO" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">English for IT 1 — CISCO</span>
+      <span class="cert-date">Jun 2025</span>
+    </div>
+  </div>
+
+  <div class="cert-item">
+    <img src="imgs/badge_english_IT2.png" alt="CISCO" class="cert-badge" />
+    <div class="cert-info">
+      <span class="cert-name">English for IT 2 — CISCO</span>
+      <span class="cert-date">Jun 2025</span>
+    </div>
+  </div>
+
+</div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">Let's work<br>together.</h2>
+      <div class="divider" style="margin: 1.5rem auto 2.5rem;"></div>
+      <p class="contact-sub">I'm currently open to internship opportunities, freelance projects, and collaborations. Feel free to reach out!</p>
+      <a href="https://mail.google.com/mail/?view=cm&to=sophiavienmatanga15@gmail.com" target="_blank" class="contact-email">
+      sophiavienmatanga15@gmail.com
+     </a>
+      <p class="contact-phone">0976-194-4801</p>
+
+  <div class="social-links">
+
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/sophia.matanga.92/" target="_blank" class="social-btn" aria-label="Facebook">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+      </svg>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/_vienx/" target="_blank" class="social-btn" aria-label="Instagram">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+      </svg>
+    </a>
+
+    <!-- GitHub  -->
+    <a href="https://github.com/svvmatanga" target="_blank" class="social-btn" aria-label="GitHub">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+      </svg>
+    </a>
+
+     <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/sophia-vien-matanga-01348a3b2/" target="_blank" class="social-btn" aria-label="LinkedIn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+        <rect x="2" y="9" width="4" height="12"/>
+        <circle cx="4" cy="4" r="2"/>
+      </svg>
+    </a>
+</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-name">Sophia Vien V. Matanga</div>
+    <div class="footer-note">BS Computer Science · PLM Manila</div>
+  </footer>
+
+  <script>
+    // Scroll-triggered fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.timeline-item, .project-card, .edu-card, .cert-item')
+      .forEach(el => observer.observe(el));
+
+    // Stagger cert items
+    document.querySelectorAll('.cert-item').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.07}s`;
+    });
+
+    // Stagger project cards
+    document.querySelectorAll('.project-card').forEach((el, i) => {
+      el.style.transitionDelay = `${i * 0.1}s`;
+    });
+
+    // Active nav link highlight on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 200) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        link.style.color = link.getAttribute('href') === `#${current}`
+          ? 'var(--accent)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
